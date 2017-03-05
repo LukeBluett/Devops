@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow" id="window_login">
     <property name="can_focus">False</property>
+    <signal name="destroy" handler="on_window_login_destroy" swapped="no"/>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -39,7 +40,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry">
+              <object class="GtkEntry" id="entry_username">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </object>
@@ -47,6 +48,20 @@
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">*required</property>
+                <attributes>
+                  <attribute name="foreground" value="#efef29292929"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -73,7 +88,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry">
+              <object class="GtkEntry" id="entry_password">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </object>
@@ -81,6 +96,20 @@
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">*required</property>
+                <attributes>
+                  <attribute name="foreground" value="#efef29292929"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -101,6 +130,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="button-press-event" handler="button_login_button_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -114,6 +144,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="button-press-event" handler="button_cancel_button_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
