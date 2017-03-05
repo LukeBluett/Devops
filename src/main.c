@@ -16,7 +16,17 @@ GtkWidget *labelWarningUsername;
 GtkWidget *labelWarningPassword;
 
 // Global Variables for all Widgets on the Gtk Main GUI
+GtkWidget *windowMain;
+GtkWidget *buttonAdd;
+GtkWidget *buttonDelete;
+GtkWidget *buttonQuit;
+GtkWidget *buttonLogout;
+GtkWidget *radioButtonShow;
+GtkWidget *radioButtonHide;
 
+/*
+ *	This function connects the login.glade widgets to the corresponding global variables
+ */
 void setLoginWidgets() {
 	windowLogin = GTK_WIDGET(gtk_builder_get_object(builder, "window_login"));
 	buttonLogin = GTK_WIDGET(gtk_builder_get_object(builder, "button_login"));
@@ -27,6 +37,19 @@ void setLoginWidgets() {
 				"label_warning_username"));
 	labelWarningPassword = GTK_WIDGET(gtk_builder_get_object(builder, 
 				"label_warning_password"));
+}
+
+/*
+ *	This function connects the main.glade widgets to the corresponding global variables
+ */
+void setMainWidgets() {
+	windowMain = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
+	buttonAdd = GTK_WIDGET(gtk_builder_get_object(builder, "button_add"));
+	buttonDelete = GTK_WIDGET(gtk_builder_get_object(builder, "button_delete"));
+	buttonQuit = GTK_WIDGET(gtk_builder_get_object(builder, "button_quit"));
+	buttonLogout = GTK_WIDGET(gtk_builder_get_object(builder, "button_logout"));
+	radioButtonShow = GTK_WIDGET(gtk_builder_get_object(builder, "radio_button_show"));
+	radioButtonHide = GTK_WIDGET(gtk_builder_get_object(builder, "radio_button_hide"));
 }
 
 /*
@@ -41,9 +64,12 @@ void button_login_button_press_event(GtkWidget *widget, gpointer data) {
 		gtk_widget_show(labelWarningUsername);
 	}
 
-	if(strcmp(gtk_entry_get_text(entryUsername), "") == 0) {
+	if(strcmp(gtk_entry_get_text(entryPassword), "") == 0) {
 		gtk_widget_show(labelWarningPassword);
 	}
+
+	gtk_widget_show(windowMain);
+	gtk_widget_hide(windowLogin);
 }
 
 void button_cancel_button_press_event(GtkWidget *widget, gpointer data) {
@@ -60,8 +86,10 @@ int main(int argc, char *argv[]) {
 
 	builder = gtk_builder_new();
 	gtk_builder_add_from_file(builder, "../res/login.glade", NULL);
+	gtk_builder_add_from_file(builder, "../res/main.glade", NULL);
 
 	setLoginWidgets();
+	setMainWidgets();
 
 	gtk_builder_connect_signals(builder, NULL);
 
