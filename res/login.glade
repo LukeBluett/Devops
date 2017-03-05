@@ -27,6 +27,7 @@
           <object class="GtkButtonBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="layout_style">spread</property>
             <child>
               <object class="GtkLabel" id="label_username">
                 <property name="visible">True</property>
@@ -51,7 +52,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="label_warning_username">
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">*required</property>
                 <attributes>
@@ -75,6 +76,7 @@
           <object class="GtkButtonBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="layout_style">spread</property>
             <child>
               <object class="GtkLabel" id="label_password">
                 <property name="visible">True</property>
@@ -99,7 +101,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="label_warning_password">
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">*required</property>
                 <attributes>
