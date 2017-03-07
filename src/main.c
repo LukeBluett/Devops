@@ -2,7 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include <libpq-fe.h>
 
+
+// Global Variables For Database Connections
+PGconn *conn;
+PGresult *res;
 
 GtkBuilder *builder;
 
@@ -84,7 +89,110 @@ void on_window_login_destroy() {
 	gtk_main_quit();
 }
 
+int postgresVersion() {
+	return PQlibVersion();
+}
+
+void postgresCloseConnection() {
+	PQclear(res);
+	PQfinish(conn);
+}
+
+int postgresEstablishConnection(char* user, char* database) {
+	char command[256];
+       	strcpy(command, "user= ");
+	strcat(command, user);
+	strcat(command, " dbname= ");
+	strcat(command, database);
+	conn = PQconnectdb(command);
+	
+	if(PQstatus(conn) == CONNECTION_BAD) {
+		fprintf(stderr, "Connection to database failed: %s\n", PQerrorMessage(conn));
+		postgresCloseConnection();
+		exit(1);
+	}
+
+	int ver = PQserverVersion(conn);
+
+	g_print("Server Version: %d\n", ver);
+	
+	return 0;
+}
+
+int postgresCreateTable(char* tableName) {
+	PQclear(res);
+
+	char command[256];
+	strcpy(command, "DROP TABLE IF EXISTS ");
+	strcat(command, tableName);
+
+	res = PQexec(conn, command);
+
+	if(PQresultStatus(res) != PGRES_COMMAND_OK) {
+		postgresCloseConnection();
+		exit(1);
+	}
+
+	return 0;
+}
+
+int postgresInsert(char* tableName, char* account, char* password) {
+	PQclear(res);
+
+	char command[256];
+	strcpy(command, "INSERT INTO ");
+	strcat(command, tableName);
+	strcat(command, " VALUES(");
+	strcat(command, account);
+	strcat(command, ", ");
+	strcat(command, password);
+	strcat(command, ")");
+
+	res = PQexec(conn, command);
+
+	if(PQresultStatus(res) != PGRES_COMMAND_OK) {
+		postgresCloseConnection();
+		exit(1);
+	}
+	return 0;
+}
+
+int postgresDelete(char* tableName, char* account) {
+	PQclear(res);
+
+	char command[256];
+	strcpy(command, "DELETE FROM");
+	strcat(command, tableName);
+	strcat(command, " WHERE account = ");
+	strcat(command, account);
+	
+	res = PQexec(conn, command);
+
+	return 0;
+}
+
+int postgresQuery() {
+	PQclear(res);
+
+	res = PQexec(conn, "SELECT VERSION()");
+
+	if(PQresultStatus(res) != PGRES_TUPLES_OK) {
+		postgresCloseConnection();
+		g_print("No data retrieved\n");
+	}
+
+	// int rows = PQntuples(res); : gets number of rows in the database
+
+	g_print("%s\n", PQgetvalue(res, 0, 0));
+
+	return 0;
+}
+
 int main(int argc, char *argv[]) {
+	
+	// Connect To Database
+	g_print("Postgresql Version: %d\n", postgresVersion());
+
 	// launch GUI
 	gtk_init(&argc, &argv);
 
@@ -104,10 +212,6 @@ int main(int argc, char *argv[]) {
 	*/
 	gtk_widget_show(windowLogin);
 	gtk_main();
-
-	
-	// Connect To Database
-	
 
 	return 0;
 }
