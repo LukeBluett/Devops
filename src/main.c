@@ -69,7 +69,7 @@ void button_login_button_press_event(GtkWidget *widget, gpointer data) {
 	}
 
 	gtk_widget_show(windowMain);
-	gtk_widget_hide(windowLogin);
+//	gtk_widget_hide(windowLogin);
 }
 
 void button_cancel_button_press_event(GtkWidget *widget, gpointer data) {
@@ -89,8 +89,8 @@ int main(int argc, char *argv[]) {
 	gtk_init(&argc, &argv);
 
 	builder = gtk_builder_new();
-	gtk_builder_add_from_file(builder, "../res/login.glade", NULL);
-	gtk_builder_add_from_file(builder, "../res/main.glade", NULL);
+	gtk_builder_add_from_file(builder, "res/login.glade", NULL);
+	gtk_builder_add_from_file(builder, "res/main.glade", NULL);
 
 	setLoginWidgets();
 	setMainWidgets();

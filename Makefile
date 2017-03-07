@@ -1,19 +1,22 @@
 SHELL = /bin/sh
 
-SRCLOCATN = src/
-RESLOCATN = res/
-BINLOCATN = bin/
-OBJS = main.o
-CFLAG = -Wall -g
+SRCPATH = src/main.c
+RESPATH = res/
+BINPATH = bin/
+OBJS = main
+CFLAGS = `pkg-config --cflags gtk+-3.0`
 CC = gcc
 INCLUDE = 
-LIBS = -lm
+LIBS = `pkg-config --libs gtk+-3.0`
 
-install:${OBJ}
-	${CC} ${CFLAGS} ${INCLUDE} - o $@ ${OBJS} ${LIBS}
+compile:
+	${CC} $(CFLAGS) ${INCLUDE} ${SRCPATH} -o ${BINPATH}${OBJS} ${LIBS} -rdynamic
 
 clean:
 	-rm -f *.o core *.core
 
 run:
-	./${BINLOCATN}${OBJS}
+	./${BINPATH}${OBJS}
+
+install:
+	${CC}
