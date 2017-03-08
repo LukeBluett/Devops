@@ -140,6 +140,7 @@ int postgresInsert(char* tableName, char* account, char* password) {
 	PQclear(res);
 
 	char command[256];
+	/*
 	strcpy(command, "INSERT INTO ");
 	strcat(command, tableName);
 	strcat(command, " VALUES(");
@@ -147,6 +148,8 @@ int postgresInsert(char* tableName, char* account, char* password) {
 	strcat(command, ", ");
 	strcat(command, password);
 	strcat(command, ")");
+	*/
+	printf(command, "INSERT INTO %s VALUES(\"%s\", \"%s\")", tableName, account, password);
 
 	res = PQexec(conn, command);
 
